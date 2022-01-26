@@ -1,0 +1,4 @@
+* About
+This is a Python implementation of [[https://www.powerlanguage.co.uk/wordle/][wordle]] designed to make it easy to run multiple games and evaluate different strategies. For examples of how to use the package, see the [[./tests/][test]] files.
+
+
