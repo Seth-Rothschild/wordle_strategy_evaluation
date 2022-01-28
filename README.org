@@ -1,4 +1,33 @@
 * About
 This is a Python implementation of [[https://www.powerlanguage.co.uk/wordle/][wordle]] designed to make it easy to run multiple games and evaluate different strategies. For examples of how to use the package, see the [[./tests/][test]] files.
 
+** Strategies
+For this package a /strategy/ is defined as a function which takes in a ~Game~ object and returns that object as a solved game. A simple strategy might look like this:
 
+#+BEGIN_SRC
+  def cheat(game):
+      game.guess(game.target_word)
+      return game
+#+END_SRC
+
+While it's not particularly interesting to use the ~target_word~ attribute of the game object, there are attributes which you would actually use in game like the ~greens~, ~yellows~, and ~greys~ built in arrays. There are also a handful of helpful functions in the [[./strategies.py][strategies.py]] file. Here's an example of a slightly more sophisticated strategy.
+
+#+BEGIN_SRC
+  from wordle_strategy_evaluation.game import DEFAULT_WORDS_LIST
+  import wordle_strategy_evaluation.strategy as st
+
+  def guess_by_freq(game):
+      while not game.game_over:
+          filtered = st.filter_all(game)
+	  rate_words = st.score_words_list(filtered, st.DEFAULT_FREQS)
+	  best_word = list(rate_words.keys())[0]
+	  game.guess(best_word)
+      return game
+#+END_SRC
+
+The ~st.filter_all~ function looks at the greens, yellows, and greys from previous guesses and filters the complete word list accordingly. The ~st.score_words~ just scores words according to how often a letter appears in a given position. This strategy will solve a wordle in about 3.84 guesses on average.
+
+** Limitations
+This implementation of wordle doesn't handle duplicate letters well. In the actual game, if a duplicate letter is guessed either both will turn yellow/green if there are two of the letter in the word or one will stay grey if the letter only appears once.
+
+While that does convey information, it's not immediately obvious that it will substantially reduce solve time and incorporating it would all a lot of complexity into the solvers.
