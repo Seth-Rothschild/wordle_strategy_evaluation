@@ -52,7 +52,7 @@ class Game:
         if not len(color_list):
             new_color_list = 5 * [""]
         else:
-            new_color_list = color_list[-1]
+            new_color_list = color_list[-1].copy()
 
         for i, value in enumerate(result):
             if attempt[i] not in new_color_list[i] and value == color:
