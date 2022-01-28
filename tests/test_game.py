@@ -40,8 +40,10 @@ def test_result():
     Letters that match should be green, in word yellow, else grey
     """
     game = Game(target_word="awake")
-    result = game.guess("pears")
+    guess = "pears"
+    result = game.guess(guess)
     assert result == ["grey", "yellow", "green", "grey", "grey"]
+    assert game.guesses[0] == guess
     assert game.results[0] == result
 
 

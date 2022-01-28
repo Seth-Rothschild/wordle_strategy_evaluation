@@ -28,6 +28,7 @@ class Game:
         self.greens = []
         self.yellows = []
         self.greys = []
+        self.guesses = []
         self.results = []
 
     def _eval_guess(self, guess_char, index):
@@ -66,6 +67,7 @@ class Game:
         self.greens.append(self._update_color_list(attempt, result, "green"))
         self.yellows.append(self._update_color_list(attempt, result, "yellow"))
         self.greys.append(self._update_color_list(attempt, result, "grey"))
+        self.guesses.append(attempt)
         self.results.append(result)
 
         self.move_counter = len(self.results)
