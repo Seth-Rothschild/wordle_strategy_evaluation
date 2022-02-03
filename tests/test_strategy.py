@@ -29,6 +29,14 @@ def test_filter_greens(game):
     assert len(words) == 141
 
 
+def test_filter_duplicates(game):
+    words = st.filter_duplicates(game)
+    assert len(words) == 2315
+    game.guess("areas")
+    words = st.filter_duplicates(game)
+    assert len(words) == 839
+
+
 def test_filter_all(game):
     words = st.filter_all(game)
     assert len(words) == 7
@@ -129,12 +137,3 @@ def test_run_trial():
     score, error = st.evaluate_trial(all_words)
     assert score == 0.0
     assert error == 0.0
-
-
-def test_all():
-    for strategy in st.STRATEGIES
-        trial = st.run_trial(strategy)
-        score, _ = st.evaluate_trial(trial)
-        print("For strategy {}".format(strategy.__name__))
-        print("    Average solve in: {:.2f}\n".format(score))
-

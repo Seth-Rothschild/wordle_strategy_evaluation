@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name="wordle_strategy_evaluation",
     packages=find_packages(),
-    version="0.0.1",
+    version="0.0.2",
     entry_points={
         "console_scripts": [
             "wordle_strategy_evaluation = wordle_strategy_evaluation.__main__:main"

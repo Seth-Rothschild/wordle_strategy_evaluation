@@ -92,3 +92,28 @@ def test_color_arrays():
     assert game.greys[-1] == ["pg", "r", "", "rp", "s"]
     assert game.yellows[-1] == ["", "e", "", "", ""]
     assert game.greens[-1] == ["a", "w", "a", "k", "e"]
+
+
+def test_duplicate():
+    """When a guess has a duplicate letter
+    If the letter appears in the target word
+    the duplicates attribute should store what is known
+    """
+    game = Game(target_word="grime")
+    game.guess("crane")
+    assert "m" not in game.duplicates.keys()
+    game.guess("magma")
+    assert game.duplicates["m"] == "exactly_one"
+
+    game = Game(target_word="gummy")
+    game.guess("magma")
+    assert game.duplicates["m"] == "at_least_two"
+    game.guess("mummy")
+    assert game.duplicates["m"] == "exactly_two"
+
+    game = Game(target_word="mamma")
+    game.guess("magma")
+    assert game.duplicates["m"] == "at_least_two"
+    assert game.duplicates["a"] == "at_least_two"
+    game.guess("mummy")
+    assert game.duplicates["m"] == "exactly_three"

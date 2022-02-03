@@ -25,9 +25,6 @@ While it's not particularly interesting to use the ~target_word~ attribute of th
       return game
 #+END_SRC
 
-The ~st.filter_all~ function looks at the greens, yellows, and greys from previous guesses and filters the complete word list accordingly. The ~st.score_words~ just scores words according to how often a letter appears in a given position. This strategy will solve a wordle in about 3.84 guesses on average.
+The ~st.filter_all~ function looks at the greens, yellows, and greys from previous guesses and filters the complete word list accordingly. The ~st.score_words~ just scores words according to how often a letter appears in a given position. This strategy will solve a wordle in about 3.81 guesses on average.
 
-** Limitations
-This implementation of wordle doesn't handle duplicate letters well. In the actual game, if a duplicate letter is guessed either both will turn yellow/green if there are two of the letter in the word or one will stay grey if the letter only appears once.
 
-While that does convey information, it's not immediately obvious that it will substantially reduce solve time and incorporating it would all a lot of complexity into the solvers.

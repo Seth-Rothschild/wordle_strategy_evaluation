@@ -3,7 +3,25 @@ import random
 import math
 from statistics import mean, stdev
 
-from wordle_strategy_evaluation.game import DEFAULT_WORDS_LIST, Game
+from wordle_strategy_evaluation.game import DEFAULT_WORDS_LIST, DEFAULT_GUESSABLES, Game
+
+
+def filter_duplicates(game, words_list=None):
+    if words_list is None:
+        words_list = game.words_list
+    if not len(list(game.duplicates.keys())):
+        return words_list
+    filtered = words_list
+    for char, constraint in game.duplicates.items():
+        if constraint == "exactly_one":
+            filtered = [word for word in filtered if word.count(char) == 1]
+        if constraint == "exactly_two":
+            filtered = [word for word in filtered if word.count(char) == 2]
+        if constraint == "at_least_two":
+            filtered = [word for word in filtered if word.count(char) > 1]
+        if constraint == "exactly_three":
+            filtered = [word for word in filtered if word.count(char) == 3]
+    return filtered
 
 
 def filter_greens(game, greens, words_list=None):
@@ -56,6 +74,7 @@ def filter_all(game, words_list=None):
     filtered = filter_greens(game, greens, filtered)
     filtered = filter_yellows(game, yellows, filtered)
     filtered = filter_greys(game, greys, filtered)
+    filtered = filter_duplicates(game, filtered)
     return filtered
 
 
@@ -96,7 +115,7 @@ def cheat_more(game):
 
 
 def linear_select(game):
-    for guess in DEFAULT_WORDS_LIST:
+    for guess in game.words_list:
         game.guess(guess)
         if game.game_over:
             return game
@@ -110,16 +129,17 @@ def random_select(game):
 
 
 def guess_by_freq(game):
-    filtered = DEFAULT_WORDS_LIST
+    filtered = game.words_list
+    freqs = get_letter_freq(filtered)
     while not game.game_over:
         filtered = filter_all(game)
-        guess = list(score_words_list(filtered, DEFAULT_FREQS).keys())[0]
+        guess = list(score_words_list(filtered, freqs).keys())[0]
         game.guess(guess)
     return game
 
 
 def guess_by_updating_freq(game):
-    filtered = DEFAULT_WORDS_LIST
+    filtered = game.words_list
     while not game.game_over:
         filtered = filter_all(game)
         freqs = get_letter_freq(filtered)
